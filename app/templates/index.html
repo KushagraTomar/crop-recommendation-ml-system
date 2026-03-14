@@ -25,31 +25,31 @@
 
         <form method="post" action="/predict">
             <div class="grid">
-                <div>
+                <div style="width:90%;">
                     <label for="N">Nitrogen (N)</label>
                     <input id="N" name="N" type="number" step="any" required value="{{ input_data.N if input_data else '' }}" />
                 </div>
-                <div>
+                <div style="width:90%;">
                     <label for="P">Phosphorus (P)</label>
                     <input id="P" name="P" type="number" step="any" required value="{{ input_data.P if input_data else '' }}" />
                 </div>
-                <div>
+                <div style="width:90%;">
                     <label for="K">Potassium (K)</label>
                     <input id="K" name="K" type="number" step="any" required value="{{ input_data.K if input_data else '' }}" />
                 </div>
-                <div>
+                <div style="width:90%;">
                     <label for="temperature">Temperature (C)</label>
                     <input id="temperature" name="temperature" type="number" step="any" required value="{{ input_data.temperature if input_data else '' }}" />
                 </div>
-                <div>
+                <div style="width:90%;">
                     <label for="humidity">Humidity (%)</label>
                     <input id="humidity" name="humidity" type="number" step="any" required value="{{ input_data.humidity if input_data else '' }}" />
                 </div>
-                <div>
+                <div style="width:90%;">
                     <label for="ph">pH</label>
                     <input id="ph" name="ph" type="number" step="any" required value="{{ input_data.ph if input_data else '' }}" />
                 </div>
-                <div>
+                <div style="width:90%;">
                     <label for="rainfall">Rainfall (mm)</label>
                     <input id="rainfall" name="rainfall" type="number" step="any" required value="{{ input_data.rainfall if input_data else '' }}" />
                 </div>
