@@ -34,6 +34,8 @@ from pipeline.config import (
     MODELS_DIR,
     REPORTS_DIR,
     SCALED_MODELS,
+    TEST_SIZE,
+    RANDOM_STATE,
     FeatureEngineeringConfig,
     MODEL_SPECS,
     RAW_FEATURES,
@@ -63,7 +65,6 @@ def setup_logging(verbose: bool = False) -> None:
 
 def run_pipeline(
     data_path: str | Path | None = None,
-    model_names: list[str] | None = None,
     run_grid_search: bool = True,
     enable_feature_engineering: bool = False,
     verbose: bool = False,
@@ -90,30 +91,31 @@ def run_pipeline(
     # 1. Load & validate
     # ------------------------------------------------------------------
     logger.info("\n[Step 1/7] Loading and validating data ...")
-    df = load_data(path=data_path)
+    df = load_data()
     df = validate_data(df)
-    logger.info("  Dataset shape: %s | Classes: %d", df.shape, df["crop"].nunique())
+    logger.info("[info]  Dataset shape: %s | Classes: %d", df.shape, df["crop"].nunique())
 
     # ------------------------------------------------------------------
     # 2. Train/test split
     # ------------------------------------------------------------------
     logger.info("\n[Step 2/7] Splitting data ...")
-    X_train, X_test, y_train, y_test = split_data(df)
+    X_train, X_test, y_train, y_test = split_data(
+        df, test_size=TEST_SIZE, random_state=RANDOM_STATE)
 
     # ------------------------------------------------------------------
     # 3. Feature engineering
     # ------------------------------------------------------------------
-    if enable_feature_engineering:
-        logger.info("\n[Step 3/7] Engineering features ...")
-        fe_config = FeatureEngineeringConfig()
-        fe = FeatureEngineer(config=fe_config)
-        X_train = fe.fit_transform(X_train)
-        X_test = fe.transform(X_test)
-        logger.info("  Feature count after engineering: %d (was %d)",
-                     X_train.shape[1], len(RAW_FEATURES))
-    else:
-        logger.info("\n[Step 3/7] Feature engineering SKIPPED")
-        fe = None
+    # if enable_feature_engineering:
+    #     logger.info("\n[Step 3/7] Engineering features ...")
+    #     fe_config = FeatureEngineeringConfig()
+    #     fe = FeatureEngineer(config=fe_config)
+    #     X_train = fe.fit_transform(X_train)
+    #     X_test = fe.transform(X_test)
+    #     logger.info("  Feature count after engineering: %d (was %d)",
+    #                  X_train.shape[1], len(RAW_FEATURES))
+    # else:
+    #     logger.info("\n[Step 3/7] Feature engineering SKIPPED")
+    #     fe = None
 
     # ------------------------------------------------------------------
     # 4. Preprocessing (encode + scale)
@@ -143,7 +145,6 @@ def run_pipeline(
         X_train_raw=X_train,
         y_train_encoded=y_train_enc,
         X_train_scaled=X_train_scaled,
-        model_names=model_names,
     )
 
     # ------------------------------------------------------------------
@@ -156,7 +157,7 @@ def run_pipeline(
         X_test_scaled=X_test_scaled,
         y_test=y_test_enc,
         scaled_models=SCALED_MODELS,
-        label_names=preprocessor.classes,
+        label_names=preprocessor.label_encoder.classes_,
     )
     comparison = build_comparison_table(eval_results)
 
@@ -200,7 +201,7 @@ def run_pipeline(
     return comparison
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args():
     parser = argparse.ArgumentParser(
         description="Crop Recommendation ML Training Pipeline",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -229,11 +230,10 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def main() -> None:
+def main():
     args = parse_args()
     run_pipeline(
         data_path=args.data_path,
-        model_names=args.models,
         run_grid_search=not args.no_grid_search,
         enable_feature_engineering=not args.no_feature_engineering,
         verbose=args.verbose,

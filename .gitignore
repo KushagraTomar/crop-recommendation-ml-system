@@ -1,1 +1,5 @@
 venv/
+reports/
+models/
+
+**/__pycache__/**

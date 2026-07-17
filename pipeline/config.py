@@ -63,6 +63,7 @@ MODEL_SPECS: Dict[str, ModelSpec] = {
             C=[0.01, 0.1, 1.0, 10.0],
             solver=["lbfgs", "liblinear"],
             max_iter=[1000],
+            random_state=RANDOM_STATE,
         ),
         needs_scaling=True,
     ),
@@ -78,6 +79,7 @@ MODEL_SPECS: Dict[str, ModelSpec] = {
             min_samples_split=[2, 5, 7],
             min_samples_leaf=[2, 4],
             criterion=["gini", "entropy"],
+            random_state=RANDOM_STATE,
         ),
     ),
     "random_forest": ModelSpec(
@@ -94,6 +96,7 @@ MODEL_SPECS: Dict[str, ModelSpec] = {
             min_samples_split=[2, 5, 7],
             min_samples_leaf=[2, 4],
             max_features=["sqrt", "log2", None],
+            random_state=RANDOM_STATE,
         ),
     ),
     "svm": ModelSpec(
@@ -104,6 +107,7 @@ MODEL_SPECS: Dict[str, ModelSpec] = {
             C=[0.1, 1, 10, 100],
             gamma=["scale", "auto", 0.01, 0.1, 1],
             kernel=["poly", "rbf", "linear", "sigmoid"],
+            random_state=RANDOM_STATE,
         ),
         needs_scaling=True,
     ),
@@ -116,6 +120,7 @@ MODEL_SPECS: Dict[str, ModelSpec] = {
             weights=["uniform", "distance"],
             algorithm=["auto", "ball_tree", "kd_tree", "brute"],
             metric=["euclidean", "manhattan", "minkowski"],
+            random_state=RANDOM_STATE,
         ),
     ),
     "naive_bayes": ModelSpec(
@@ -124,6 +129,7 @@ MODEL_SPECS: Dict[str, ModelSpec] = {
         baseline_params=dict(var_smoothing=1e-9),
         param_grid=dict(
             var_smoothing=[1e-11, 1e-10, 1e-9, 1e-8, 1e-7, 1e-6],
+            random_state=RANDOM_STATE,
         ),
         needs_scaling=True,
     ),
@@ -139,6 +145,7 @@ MODEL_SPECS: Dict[str, ModelSpec] = {
             max_depth=[3, 5, 7],
             min_samples_split=[2, 5],
             min_samples_leaf=[2, 4],
+            random_state=RANDOM_STATE,
         ),
     ),
 }

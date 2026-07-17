@@ -63,7 +63,7 @@ def train_single_model(
 
     if spec.run_grid_search and spec.param_grid:
 
-        base_params = {"random_state": RANDOM_STATE} if "random_state" in spec.baseline_params else {}
+        base_params = {"random_state": RANDOM_STATE}
         if spec.name == "svm":
             base_params["probability"] = True
 
@@ -108,14 +108,11 @@ def train_all_models(
     X_train_raw: pd.DataFrame,
     y_train_encoded: np.ndarray,
     X_train_scaled: pd.DataFrame,
-    model_names: List[str] | None = None,
     cv_folds: int = CV_FOLDS,
     n_jobs: int = -1,
 ) -> Dict[str, TrainResult]:
     """Train all (or selected) models, routing each to raw or scaled features."""
     specs = MODEL_SPECS
-    if model_names:
-        specs = {k: v for k, v in specs.items() if k in model_names}
 
     results: Dict[str, TrainResult] = {}
     for name, spec in specs.items():

@@ -10,10 +10,10 @@
       grapes       1.00      1.00      1.00        15
         jute       0.83      1.00      0.91        15
  kidneybeans       1.00      1.00      1.00        15
-      lentil       0.93      0.93      0.93        15
+      lentil       0.88      0.93      0.90        15
        maize       0.94      1.00      0.97        15
        mango       1.00      1.00      1.00        15
-   mothbeans       0.94      1.00      0.97        15
+   mothbeans       0.93      0.93      0.93        15
     mungbean       1.00      1.00      1.00        15
    muskmelon       1.00      1.00      1.00        15
       orange       1.00      1.00      1.00        15
